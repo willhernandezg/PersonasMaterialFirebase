@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PersonasMaterial</string>
+    <string name="action_settings">Settings</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="btnguardar">GUARDAR</string>
+    <string name="btnLimpiar">LIMPIAR</string>
+    <string name="tituloCrear">Crear Personas</string>
+    <string name="mensaje_guardado">Persona guardada con exito</string>
+</resources>
