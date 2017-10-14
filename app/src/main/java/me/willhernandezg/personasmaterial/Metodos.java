@@ -9,10 +9,20 @@ import java.util.Random;
 
 public class Metodos {
 
-    static int fotoAleatoria(ArrayList<Integer> fotos){
+    public static int fotoAleatoria(ArrayList<Integer> fotos){
         int fotoSeleccionada;
         Random r = new Random();
         fotoSeleccionada = r.nextInt(fotos.size());
         return fotos.get(fotoSeleccionada);
     }
+
+    public static boolean existencia_persona(ArrayList<Persona> personas, String cedula){
+        for (int i = 0; i < personas.size() ; i++) {
+            if (personas.get(i).getCedula().equals(cedula)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

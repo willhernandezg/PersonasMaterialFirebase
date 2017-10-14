@@ -6,6 +6,7 @@
     <string name="btnguardar">GUARDAR</string>
     <string name="btnLimpiar">LIMPIAR</string>
     <string name="tituloCrear">Crear Personas</string>
+    <string name="tituloEditar">Editar Personas</string>
     <string name="mensaje_guardado">Persona guardada con exito</string>
     <string name="cedula">Cedula</string>
 
@@ -15,5 +16,15 @@
         <item>@string/masculino</item>
         <item>@string/femenino</item>
     </string-array>
+
+    <string name="informacion">INFORMACION</string>
+    <string name="sexo">Sexo</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="titulo_eliminar_mensaje">Eliminar Persona</string>
+    <string name="eliminar_mensaje">¿Esta seguro que desea eliminar esta persona?</string>
+    <string name="si_eliminar_mensaje">Si</string>
+    <string name="no_eliminar_mensaje">No</string>
+    <string name="persona_existente_error">Ya existe una persona con esta cedula</string>
 
 </resources>
