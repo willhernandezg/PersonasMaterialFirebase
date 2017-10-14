@@ -29,6 +29,14 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/lblCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="24sp" />
+
+                <TextView
                     android:id="@+id/lblNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
