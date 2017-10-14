@@ -7,4 +7,13 @@
     <string name="btnLimpiar">LIMPIAR</string>
     <string name="tituloCrear">Crear Personas</string>
     <string name="mensaje_guardado">Persona guardada con exito</string>
+    <string name="cedula">Cedula</string>
+
+    <string name="masculino">Masculino</string>
+    <string name="femenino">Femenino</string>
+    <string-array name="sexo">
+        <item>@string/masculino</item>
+        <item>@string/femenino</item>
+    </string-array>
+
 </resources>

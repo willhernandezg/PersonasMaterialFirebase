@@ -44,7 +44,11 @@ public class CrearPersona extends AppCompatActivity {
         limpiar();
     }
 
-    public void limpiar(){
+    public void limpiar(View v){
+        limpiar();
+    }
+
+    private void limpiar(){
         cajaNombre.setText("");
         cajaApellido.setText("");
         cajaNombre.requestFocus();
