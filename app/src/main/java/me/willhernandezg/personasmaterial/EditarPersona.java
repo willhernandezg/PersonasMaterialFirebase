@@ -74,6 +74,11 @@ public class EditarPersona extends AppCompatActivity {
         if (validar_auxE(txtCedulaE, cajaCedulaE)) return false;
         else if (validar_auxE(txtNombreE, cajaNombreE)) return false;
         else if (validar_auxE(txtApellidoE, cajaApellidoE)) return false;
+        else if (Metodos.existencia_persona_editar(Datos.obtenerPersonas(),txtCedulaE.getText().toString(),cedula)) {
+            txtCedulaE.setError(res.getString(R.string.persona_existente_error));
+            txtCedulaE.requestFocus();
+            return false;
+        }
         return true;
     }
 
@@ -88,12 +93,12 @@ public class EditarPersona extends AppCompatActivity {
 
     public void onBackPressedE(){
         Intent i = new Intent(this, DetallePersona.class);
-        Bundle b = new Bundle();
+        Bundle b3 = new Bundle();
         b3.putInt("foto",foto);
-        b3.putString("cedula",cedula);
-        b3.putString("nombre",nombre);
-        b3.putString("apellido",apellido);
-        b3.putInt("sexo",sexo);
+        b3.putString("cedula",txtCedulaE.getText().toString());
+        b3.putString("nombre",txtNombreE.getText().toString());
+        b3.putString("apellido",txtApellidoE.getText().toString());
+        b3.putInt("sexo",sexoE.getSelectedItemPosition());
         i.putExtra("datos",b3);
         startActivity(i);
     }
