@@ -25,7 +25,7 @@ public class EditarPersona extends AppCompatActivity {
     private String[] opcE;
     private Bundle bundle, b3;
     private Intent i;
-    private String cedula, nombre, apellido;
+    private String id ,cedula, nombre, apellido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class EditarPersona extends AppCompatActivity {
 
         i = getIntent();
         bundle = i.getBundleExtra("datos");
+        id = bundle.getString("id");
         foto = bundle.getInt("foto");
         cedula = bundle.getString("cedula");
         nombre = bundle.getString("nombre");
@@ -62,7 +63,7 @@ public class EditarPersona extends AppCompatActivity {
 
     public void editar(View v){
         if (validarE()){
-            Persona p = new Persona(foto, txtCedulaE.getText().toString(), txtNombreE.getText().toString(), txtApellidoE.getText().toString(),sexoE.getSelectedItemPosition());
+            Persona p = new Persona(id ,foto, txtCedulaE.getText().toString(), txtNombreE.getText().toString(), txtApellidoE.getText().toString(),sexoE.getSelectedItemPosition());
             p.editar();
             Snackbar.make(v, res.getString(R.string.mensaje_guardado), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
@@ -94,6 +95,7 @@ public class EditarPersona extends AppCompatActivity {
     public void onBackPressedE(){
         Intent i = new Intent(this, DetallePersona.class);
         Bundle b3 = new Bundle();
+        b3.putString("id",id);
         b3.putInt("foto",foto);
         b3.putString("cedula",txtCedulaE.getText().toString());
         b3.putString("nombre",txtNombreE.getText().toString());

@@ -1,5 +1,8 @@
 package me.willhernandezg.personasmaterial;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 /**
@@ -7,29 +10,31 @@ import java.util.ArrayList;
  */
 
 public class Datos {
-
+    private static String db="Personas";
+    private static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private static ArrayList<Persona> personas = new ArrayList();
 
     public static void guardarPersona(Persona p){
-        personas.add(p);
+        p.setId(databaseReference.push().getKey());
+        databaseReference.child(db).child(p.getId()).setValue(p);
+        //personas.add(p);
     }
 
     public static void editarPersona(Persona p){
-        personas.set(0,p);
+        databaseReference.child(db).child(p.getId()).setValue(p);
+        //personas.set(0,p);
     }
 
     public static ArrayList<Persona> obtenerPersonas(){
         return personas;
     }
 
-    public static Boolean eliminarPersona(Persona p){
-        for (int i = 0; i < personas.size() ; i++) {
-            if (p.getCedula().equals(personas.get(i).getCedula())){
-                personas.remove(i);
-                return true;
-            }
-        }
-        return false;
+    public static void setPersonas(ArrayList<Persona> per){
+        personas=per;
+    }
+
+    public static void eliminarPersona(Persona p){
+        databaseReference.child(db).child(p.getId()).removeValue();
     }
 
 

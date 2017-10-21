@@ -6,11 +6,24 @@ package me.willhernandezg.personasmaterial;
 
 public class Persona {
     private int foto;
+    private String id;
     private String cedula;
     private String nombre;
     private String apellido;
     private int sexo;
 
+    public Persona(){
+
+    }
+
+    public Persona(String id, int foto, String cedula, String nombre, String apellido, int sexo){
+        this.id = id;
+        this.foto = foto;
+        this.cedula=cedula;
+        this.nombre=nombre;
+        this.apellido=apellido;
+        this.sexo=sexo;
+    }
 
     public Persona(int foto, String cedula, String nombre, String apellido, int sexo){
         this.foto = foto;
@@ -35,8 +48,16 @@ public class Persona {
         this.sexo=0;
     }
 
-    public Persona(String cedula){
-        this.cedula=cedula;
+    public Persona(String id){
+        this.id=id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getFoto() {
@@ -85,5 +106,9 @@ public class Persona {
 
     public void editar(){
         Datos.editarPersona(this);
+    }
+
+    public void eliminar(){
+        Datos.eliminarPersona(this);
     }
 }

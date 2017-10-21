@@ -22,6 +22,7 @@ public class AdaptadorPersona extends RecyclerView.Adapter<AdaptadorPersona.Pers
     private Resources res;
     private OnPersonaClickListener clickListener;
 
+
     public AdaptadorPersona(Context contexto,ArrayList<Persona> personas, OnPersonaClickListener clickListener) {
         this.personas = personas;
         res = contexto.getResources();
@@ -36,6 +37,7 @@ public class AdaptadorPersona extends RecyclerView.Adapter<AdaptadorPersona.Pers
 
     @Override
     public void onBindViewHolder(AdaptadorPersona.PersonaViewHolder holder, int position) {
+
         final Persona p = personas.get(position);
         holder.foto.setImageDrawable(ResourcesCompat.getDrawable(res,p.getFoto(),null));
         holder.cedula.setText(p.getCedula());

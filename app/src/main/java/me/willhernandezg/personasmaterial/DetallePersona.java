@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class DetallePersona extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Persona p;
-    private String cedula, nombre, apellido;
+    private String id, cedula, nombre, apellido;
     private int fot, sexo;
     private Bundle bundle;
     private Intent i;
@@ -49,6 +49,7 @@ public class DetallePersona extends AppCompatActivity {
 
         i = getIntent();
         bundle = i.getBundleExtra("datos");
+        id = bundle.getString("id");
         fot = bundle.getInt("foto");
         cedula = bundle.getString("cedula");
         nombre = bundle.getString("nombre");
@@ -81,7 +82,7 @@ public class DetallePersona extends AppCompatActivity {
         builder.setPositiveButton(positivo, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Persona p = new Persona(cedula);
+                Persona p = new Persona(id);
                 Datos.eliminarPersona(p);
                 onBackPressed();
             }
@@ -94,6 +95,7 @@ public class DetallePersona extends AppCompatActivity {
     public void editar(View v){
         Intent i = new Intent(DetallePersona.this, EditarPersona.class);
         Bundle b2 = new Bundle();
+        b2.putString("id",id);
         b2.putInt("foto",fot);
         b2.putString("cedula",cedula);
         b2.putString("nombre",nombre);
