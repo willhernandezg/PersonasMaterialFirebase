@@ -2,6 +2,7 @@ package me.willhernandezg.personasmaterial;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,29 +10,41 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class EditarPersona extends AppCompatActivity {
+    private ImageView fotoE;
     private EditText txtCedulaE, txtNombreE, txtApellidoE;
     private TextInputLayout cajaCedulaE, cajaNombreE, cajaApellidoE;
     private ArrayList<Integer> fotos;
     private Resources res;
     private Spinner sexoE;
-    private int foto, sexo;
+    private int sexo;
     private ArrayAdapter<String> adapter;
     private String[] opcE;
     private Bundle bundle, b3;
     private Intent i;
-    private String id ,cedula, nombre, apellido;
+    private String foto, id ,cedula, nombre, apellido;
+    private StorageReference storageReference;
+    private Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_persona);
 
+        storageReference = FirebaseStorage.getInstance().getReference();
+        fotoE = (ImageView) findViewById(R.id.fotoEditar);
         txtCedulaE = (EditText) findViewById(R.id.txtCedulaE);
         txtNombreE = (EditText) findViewById(R.id.txtNombreE);
         txtApellidoE = (EditText) findViewById(R.id.txtApellidoE);
@@ -48,7 +61,7 @@ public class EditarPersona extends AppCompatActivity {
         i = getIntent();
         bundle = i.getBundleExtra("datos");
         id = bundle.getString("id");
-        foto = bundle.getInt("foto");
+        foto = bundle.getString("foto");
         cedula = bundle.getString("cedula");
         nombre = bundle.getString("nombre");
         apellido = bundle.getString("apellido");
@@ -58,16 +71,37 @@ public class EditarPersona extends AppCompatActivity {
         txtNombreE.setText(nombre);
         txtApellidoE.setText(apellido);
         sexoE.setSelection(sexo);
+        storageReference.child(foto).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(EditarPersona.this).load(uri).into(fotoE);
+            }
+        });
 
     }
 
     public void editar(View v){
-        if (validarE()){
-            Persona p = new Persona(id ,"1", txtCedulaE.getText().toString(), txtNombreE.getText().toString(), txtApellidoE.getText().toString(),sexoE.getSelectedItemPosition());
+        String ced = txtCedulaE.getText().toString();
+        String nom = txtNombreE.getText().toString();
+        String ape = txtApellidoE.getText().toString();
+        Integer sex = sexoE.getSelectedItemPosition();
+        Persona p = new Persona(id,foto,ced,nom,ape,sex);
+
+        if (cedula.equals(ced)){
             p.editar();
-            Snackbar.make(v, res.getString(R.string.mensaje_guardado), Snackbar.LENGTH_LONG)
+            subir_foto(foto);
+            Snackbar.make(v, res.getString(R.string.mensaje_modificar), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-            onBackPressedE();
+        }else {
+            if(Metodos.existencia_persona(Datos.obtenerPersonas(),ced)){
+                txtCedulaE.setError(res.getString(R.string.persona_existente_error));
+                txtCedulaE.requestFocus();
+            }else{
+                p.editar();
+                if (filePath !=null)subir_foto(foto);
+                Snackbar.make(v, res.getString(R.string.mensaje_modificar), Snackbar.LENGTH_LONG).setAction("action", null).show();
+                // Cancelar();
+            }
         }
     }
 
@@ -93,15 +127,44 @@ public class EditarPersona extends AppCompatActivity {
     }
 
     public void onBackPressedE(){
-        Intent i = new Intent(this, DetallePersona.class);
-        Bundle b3 = new Bundle();
-        b3.putString("id",id);
-        b3.putInt("foto",foto);
-        b3.putString("cedula",txtCedulaE.getText().toString());
-        b3.putString("nombre",txtNombreE.getText().toString());
-        b3.putString("apellido",txtApellidoE.getText().toString());
-        b3.putInt("sexo",sexoE.getSelectedItemPosition());
-        i.putExtra("datos",b3);
-        startActivity(i);
+        Cancelar();
     }
+
+    public void seleccionar_foto(View v){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i,res.getString(R.string.mensaje_seleccion)),1);
+    }
+
+    public void subir_foto(String foto){
+        StorageReference chilRef = storageReference.child(foto);
+        UploadTask uploadTask = chilRef.putFile(filePath);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Cancelar();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            filePath = data.getData();
+            if (filePath != null){
+                fotoE.setImageURI(filePath);
+            }
+        }
+    }
+
+    public void Cancelar(){
+        finish();
+        Intent i = new Intent(EditarPersona.this,Principal.class);
+        startActivity(i);
+
+    }
+
 }

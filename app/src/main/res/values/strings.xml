@@ -27,5 +27,6 @@
     <string name="no_eliminar_mensaje">No</string>
     <string name="persona_existente_error">Ya existe una persona con esta cedula</string>
     <string name="mensaje_seleccion">Seleccione una imagen</string>
+    <string name="mensaje_modificar">La edicion ha sido exitosa</string>
 
 </resources>

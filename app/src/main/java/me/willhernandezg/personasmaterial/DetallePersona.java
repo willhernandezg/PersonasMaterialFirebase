@@ -3,6 +3,7 @@ package me.willhernandezg.personasmaterial;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.res.ResourcesCompat;
@@ -15,17 +16,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
 public class DetallePersona extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Persona p;
-    private String id, cedula, nombre, apellido;
-    private int fot, sexo;
+    private String id, fot, cedula, nombre, apellido;
+    private int sexo;
     private Bundle bundle;
     private Intent i;
     private ImageView foto;
     private Resources res;
     private TextView ced, nom, ape, sex;
     private String[] opc;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +43,13 @@ public class DetallePersona extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
+
+        storageReference = FirebaseStorage.getInstance().getReference();
         ced = (TextView) findViewById(R.id.lblCedulaD);
         nom = (TextView) findViewById(R.id.lblNombreD);
         ape = (TextView) findViewById(R.id.lblApellidoD);
         sex = (TextView) findViewById(R.id.lblSexoD);
+
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         foto = (ImageView) findViewById(R.id.fotoPersona);
@@ -50,13 +60,19 @@ public class DetallePersona extends AppCompatActivity {
         i = getIntent();
         bundle = i.getBundleExtra("datos");
         id = bundle.getString("id");
-        fot = bundle.getInt("foto");
+        fot = bundle.getString("foto");
         cedula = bundle.getString("cedula");
         nombre = bundle.getString("nombre");
         apellido = bundle.getString("apellido");
         sexo = bundle.getInt("sexo");
 
-        foto.setImageDrawable(ResourcesCompat.getDrawable(res,fot,null));
+        //foto.setImageDrawable(ResourcesCompat.getDrawable(res,fot,null));
+        storageReference.child(fot).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(DetallePersona.this).load(uri).into(foto);
+            }
+        });
         collapsingToolbarLayout.setTitle(nombre+" "+apellido);
         ced.setText(cedula);
         nom.setText(nombre);
@@ -96,7 +112,7 @@ public class DetallePersona extends AppCompatActivity {
         Intent i = new Intent(DetallePersona.this, EditarPersona.class);
         Bundle b2 = new Bundle();
         b2.putString("id",id);
-        b2.putInt("foto",fot);
+        b2.putString("foto",fot);
         b2.putString("cedula",cedula);
         b2.putString("nombre",nombre);
         b2.putString("apellido",apellido);

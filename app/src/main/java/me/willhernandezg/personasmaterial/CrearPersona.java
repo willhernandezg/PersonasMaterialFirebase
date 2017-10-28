@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -84,11 +85,13 @@ public class CrearPersona extends AppCompatActivity {
     }
 
     private void limpiar(){
+        foto.setImageDrawable(ResourcesCompat.getDrawable(res,android.R.drawable.ic_menu_gallery,null));
         txtCedula.setText("");
         txtNombre.setText("");
         txtApellido.setText("");
         sexo.setSelection(0);
         txtCedula.requestFocus();
+
     }
 
     public void onBackPressed(){
