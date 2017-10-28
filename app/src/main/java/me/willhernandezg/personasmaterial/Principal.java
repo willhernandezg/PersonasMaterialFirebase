@@ -92,7 +92,7 @@ public class Principal extends AppCompatActivity implements AdaptadorPersona.OnP
         Intent i = new Intent(Principal.this, DetallePersona.class);
         Bundle b = new Bundle();
         b.putString("id",p.getId());
-        b.putInt("foto",p.getFoto());
+        b.putString("foto",p.getFoto());
         b.putString("cedula",p.getCedula());
         b.putString("nombre",p.getNombre());
         b.putString("apellido",p.getApellido());

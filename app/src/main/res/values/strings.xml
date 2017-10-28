@@ -26,5 +26,6 @@
     <string name="si_eliminar_mensaje">Si</string>
     <string name="no_eliminar_mensaje">No</string>
     <string name="persona_existente_error">Ya existe una persona con esta cedula</string>
+    <string name="mensaje_seleccion">Seleccione una imagen</string>
 
 </resources>

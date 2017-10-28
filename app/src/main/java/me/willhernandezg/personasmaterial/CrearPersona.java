@@ -2,6 +2,7 @@ package me.willhernandezg.personasmaterial;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +10,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.ArrayList;
 
 public class CrearPersona extends AppCompatActivity {
+    private ImageView foto;
     private EditText txtCedula, txtNombre, txtApellido;
     private TextInputLayout cajaCedula, cajaNombre, cajaApellido;
     private ArrayList<Integer> fotos;
@@ -23,13 +30,17 @@ public class CrearPersona extends AppCompatActivity {
     private Spinner sexo;
     private ArrayAdapter<String> adapter;
     private String[] opc;
+    private Uri filePath;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_persona);
 
+        storageReference = FirebaseStorage.getInstance().getReference();
 
+        foto = (ImageView) findViewById(R.id.fotoCrear);
         txtCedula = (EditText) findViewById(R.id.txtCedula);
         txtNombre = (EditText) findViewById(R.id.txtNombre);
         txtApellido = (EditText) findViewById(R.id.txtApellido);
@@ -53,10 +64,15 @@ public class CrearPersona extends AppCompatActivity {
         fotos.add(R.drawable.images3);
     }
 
+
     public void guardar(View v){
         if (validar()){
-            Persona p = new Persona(Metodos.fotoAleatoria(fotos), txtCedula.getText().toString(), txtNombre.getText().toString(), txtApellido.getText().toString(),sexo.getSelectedItemPosition());
+            String id = Datos.getId();
+            String foto = id+".jpg";
+
+            Persona p = new Persona(id, foto, txtCedula.getText().toString(), txtNombre.getText().toString(), txtApellido.getText().toString(),sexo.getSelectedItemPosition());
             p.guardar();
+            subir_foto(foto);
             Snackbar.make(v, res.getString(R.string.mensaje_guardado), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             limpiar();
@@ -101,5 +117,29 @@ public class CrearPersona extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void seleccionar_foto(View v){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i,res.getString(R.string.mensaje_seleccion)),1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1){
+            filePath = data.getData();
+            if (filePath != null){
+                foto.setImageURI(filePath);
+            }
+        }
+    }
+
+    public void subir_foto(String foto){
+        StorageReference chilRef = storageReference.child(foto);
+        UploadTask uploadTask = chilRef.putFile(filePath);
+
     }
 }

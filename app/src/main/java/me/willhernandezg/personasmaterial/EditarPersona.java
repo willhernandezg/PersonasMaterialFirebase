@@ -63,7 +63,7 @@ public class EditarPersona extends AppCompatActivity {
 
     public void editar(View v){
         if (validarE()){
-            Persona p = new Persona(id ,foto, txtCedulaE.getText().toString(), txtNombreE.getText().toString(), txtApellidoE.getText().toString(),sexoE.getSelectedItemPosition());
+            Persona p = new Persona(id ,"1", txtCedulaE.getText().toString(), txtNombreE.getText().toString(), txtApellidoE.getText().toString(),sexoE.getSelectedItemPosition());
             p.editar();
             Snackbar.make(v, res.getString(R.string.mensaje_guardado), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
