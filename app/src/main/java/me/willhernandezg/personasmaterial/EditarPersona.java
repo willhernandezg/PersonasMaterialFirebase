@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -22,7 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class EditarPersona extends AppCompatActivity {
+public class EditarPersona extends AppCompatActivity implements RewardedVideoAdListener {
     private ImageView fotoE;
     private EditText txtCedulaE, txtNombreE, txtApellidoE;
     private TextInputLayout cajaCedulaE, cajaNombreE, cajaApellidoE;
@@ -37,6 +41,7 @@ public class EditarPersona extends AppCompatActivity {
     private String foto, id ,cedula, nombre, apellido;
     private StorageReference storageReference;
     private Uri filePath;
+    private RewardedVideoAd rewardedVideoAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,9 @@ public class EditarPersona extends AppCompatActivity {
             }
         });
 
+        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        rewardedVideoAd.setRewardedVideoAdListener(this);
+
     }
 
     public void editar(View v){
@@ -86,20 +94,24 @@ public class EditarPersona extends AppCompatActivity {
         String ape = txtApellidoE.getText().toString();
         Integer sex = sexoE.getSelectedItemPosition();
         Persona p = new Persona(id,foto,ced,nom,ape,sex);
+        if (rewardedVideoAd.isLoaded()){
+            rewardedVideoAd.show();
+        }
 
         if (cedula.equals(ced)){
             p.editar();
-            subir_foto(foto);
+            if (filePath !=null)subir_foto(foto);
+            Snackbar.make(v, res.getString(R.string.mensaje_modificar), Snackbar.LENGTH_LONG).setAction("action", null).show();
             Snackbar.make(v, res.getString(R.string.mensaje_modificar), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+
         }else {
             if(Metodos.existencia_persona(Datos.obtenerPersonas(),ced)){
                 txtCedulaE.setError(res.getString(R.string.persona_existente_error));
                 txtCedulaE.requestFocus();
             }else{
                 p.editar();
-                if (filePath !=null)subir_foto(foto);
-                Snackbar.make(v, res.getString(R.string.mensaje_modificar), Snackbar.LENGTH_LONG).setAction("action", null).show();
+
                 // Cancelar();
             }
         }
@@ -167,4 +179,38 @@ public class EditarPersona extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
 }

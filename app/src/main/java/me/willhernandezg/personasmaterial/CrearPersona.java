@@ -16,6 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,6 +37,8 @@ public class CrearPersona extends AppCompatActivity {
     private String[] opc;
     private Uri filePath;
     private StorageReference storageReference;
+    private AdView adView;
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +60,29 @@ public class CrearPersona extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,opc);
         sexo.setAdapter(adapter);
 
-        iniciar_fotos();
+        adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(res.getString(R.string.id_inter_admod));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                //super.onAdClosed();
+                otroInter();
+            }
+        });
+
+        otroInter();
+
 
     }
 
-    public void iniciar_fotos(){
-        fotos = new ArrayList<>();
-        fotos.add(R.drawable.images);
-        fotos.add(R.drawable.images2);
-        fotos.add(R.drawable.images3);
+    public void otroInter(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
     }
-
 
     public void guardar(View v){
         if (validar()){
@@ -92,6 +110,9 @@ public class CrearPersona extends AppCompatActivity {
         sexo.setSelection(0);
         txtCedula.requestFocus();
 
+        if (interstitialAd.isLoaded()){
+            interstitialAd.show();
+        }
     }
 
     public void onBackPressed(){
