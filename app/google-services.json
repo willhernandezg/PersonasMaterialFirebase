@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "1078159063363",
-    "firebase_url": "https://personasmaterial-217e6.firebaseio.com",
-    "project_id": "personasmaterial-217e6",
-    "storage_bucket": "personasmaterial-217e6.appspot.com"
+    "project_number": "785520932091",
+    "firebase_url": "https://personas-prueba.firebaseio.com",
+    "project_id": "personas-prueba",
+    "storage_bucket": "personas-prueba.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1078159063363:android:78be43da06031a6a",
+        "mobilesdk_app_id": "1:785520932091:android:78be43da06031a6a",
         "android_client_info": {
           "package_name": "me.willhernandezg.personasmaterial"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1078159063363-6ka5a62dk59vt5voj9jn83u654ff8973.apps.googleusercontent.com",
+          "client_id": "785520932091-b4nengsnv4rjvjt6na1jqi9bvmeio8dj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "me.willhernandezg.personasmaterial",
-            "certificate_hash": "94fc3bfa39829c6b9eb9a281e5fa2b10c08fc184"
+            "certificate_hash": "e3adba2d58db0b2160319f7401e8cb4470de31d0"
           }
         },
         {
-          "client_id": "1078159063363-id7qsaehisubmi0spgncnrirgh2u82gs.apps.googleusercontent.com",
+          "client_id": "785520932091-e3d886sj9arm8iqghku89fv5vc670ppo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDHXSI0IQdBsx6KtJ1RCBpGFwZ4BfVjQT8"
+          "current_key": "AIzaSyDWbonyjih2GtNM1FiBsByVVbxgqBnfCCQ"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1078159063363-id7qsaehisubmi0spgncnrirgh2u82gs.apps.googleusercontent.com",
+              "client_id": "785520932091-e3d886sj9arm8iqghku89fv5vc670ppo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
